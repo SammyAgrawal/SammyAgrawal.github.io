@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Jekflix | A blog theme for Jekyll</title>
+    <title>Samarth Agrawal | A site to learn</title>
     <description>Jekflix is a template for Jekyll inspired by Netflix and made by Thiago Rossener.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 29 Oct 2022 19:51:26 -0400</pubDate>
-    <lastBuildDate>Sat, 29 Oct 2022 19:51:26 -0400</lastBuildDate>
+    <pubDate>Sat, 29 Oct 2022 20:05:33 -0400</pubDate>
+    <lastBuildDate>Sat, 29 Oct 2022 20:05:33 -0400</lastBuildDate>
     <generator>Jekyll v3.9.2</generator>
     
       <item>
