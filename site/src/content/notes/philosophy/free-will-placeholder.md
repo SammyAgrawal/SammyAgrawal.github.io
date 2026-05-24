@@ -3,7 +3,7 @@ title: 'On Free Will (placeholder)'
 description: 'A sample note to test the /notes pipeline. Replace me.'
 pubDate: '2026-05-23'
 topic: 'philosophy'
-tags: ['agency', 'determinism']
+tags: ['agency']
 heroImage: '../../../assets/philosophy-stockphoto.jpeg'
 ---
 

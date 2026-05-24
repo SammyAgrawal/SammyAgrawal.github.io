@@ -9,6 +9,7 @@ const tags = defineCollection({
 			title: z.string(),
 			description: z.string().optional(),
 			heroImage: z.optional(image()),
+			kind: z.enum(['theme', 'tag']).default('tag'),
 		}),
 });
 

@@ -9,9 +9,14 @@ const notes = (await getCollection('notes')).sort(
 );
 
 const topics: string[] = [...new Set(notes.map((n) => n.data.topic))].sort();
-const tags: string[] = [...new Set(notes.flatMap((n) => n.data.tags))].sort();
+const tagIds: string[] = [
+	...new Set(notes.flatMap((n) => n.data.tags.map((t) => t.id))),
+].sort();
 const tagCounts: Record<string, number> = Object.fromEntries(
-	tags.map((t) => [t, notes.filter((n) => n.data.tags.includes(t)).length]),
+	tagIds.map((id) => [
+		id,
+		notes.filter((n) => n.data.tags.some((t) => t.id === id)).length,
+	]),
 );
 
 const topicHero: Record<string, any> = {};
@@ -38,16 +43,22 @@ const recent = notes.slice(0, 5);
 			topic, cross-linked by tag.
 		</p>
 	</main>
-	{tags.length > 0 && (
+	{tagIds.length > 0 && (
 		<section class="app-container py-12">
+			<div class="flex items-baseline justify-between mb-4">
+				<h2 class="section-title">Tags on notes</h2>
+				<a href="/tags/" class="text-sm hover:underline underline-offset-4 opacity-70">
+					All tags →
+				</a>
+			</div>
 			<ul class="flex flex-wrap gap-3 mt-6">
-				{tags.map((tag) => (
+				{tagIds.map((id) => (
 					<li>
 						<a
-							href={`/notes/tags/${tag}/`}
+							href={`/tags/${id}/`}
 							class="inline-block px-3 py-1 rounded-full border border-foreground/30 dark:border-foreground-dark/30 hover:bg-foreground/10 dark:hover:bg-foreground-dark/10 transition-colors text-sm"
 						>
-							#{tag} <span class="opacity-60">({tagCounts[tag]})</span>
+							#{id} <span class="opacity-60">({tagCounts[id]})</span>
 						</a>
 					</li>
 				))}

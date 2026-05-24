@@ -3,7 +3,7 @@ title: 'Agency in Markets (placeholder)'
 description: 'A second sample note under a different topic, sharing the `agency` tag.'
 pubDate: '2026-05-23'
 topic: 'economics'
-tags: ['agency', 'incentives']
+tags: ['prosperity-project']
 heroImage: '../../../assets/economics-stockphoto.jpeg'
 ---
 

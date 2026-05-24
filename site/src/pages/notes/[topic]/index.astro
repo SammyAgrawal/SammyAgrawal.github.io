@@ -43,7 +43,7 @@ const { topic, notes } = Astro.props;
 								description={note.data.description}
 								pubDate={note.data.pubDate}
 								heroImage={note.data.heroImage}
-								tags={note.data.tags}
+								tags={note.data.tags.map((t) => t.id)}
 							/>
 						</li>
 					);

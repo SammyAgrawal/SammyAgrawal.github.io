@@ -1,0 +1,127 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+
+export async function getStaticPaths() {
+	const [tags, notes, writing, projects] = await Promise.all([
+		getCollection('tags'),
+		getCollection('notes'),
+		getCollection('writing'),
+		getCollection('projects'),
+	]);
+
+	return tags.map((tag) => {
+		const taggedNotes = notes
+			.filter((n) => n.data.tags.some((t) => t.id === tag.id))
+			.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+		const taggedWriting = writing
+			.filter((w) => w.data.tags.some((t) => t.id === tag.id))
+			.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+		const taggedProjects = projects
+			.filter((p) => p.data.tags.some((t) => t.id === tag.id))
+			.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+		return {
+			params: { tag: tag.id },
+			props: { tag, taggedNotes, taggedWriting, taggedProjects },
+		};
+	});
+}
+
+const { tag, taggedNotes, taggedWriting, taggedProjects } = Astro.props;
+const { Content } = await render(tag);
+const hasBody = !!tag.body && tag.body.trim().length > 0;
+---
+
+<BaseLayout
+	title={`${tag.data.title} — Tags — Sammy Agrawal`}
+	description={tag.data.description ?? `Content tagged ${tag.id}.`}
+>
+	<main class="app-container pt-36">
+		<p class="text-sm opacity-70 mb-2">
+			<a href="/tags/" class="hover:underline underline-offset-4">Tags</a> /
+			{tag.data.kind === 'theme' ? 'theme' : 'tag'} /
+		</p>
+		<h1 class="text-6xl pb-8 font-bold">
+			{tag.data.kind === 'theme' ? tag.data.title : `#${tag.id}`}
+		</h1>
+		{tag.data.description && (
+			<p class="md:w-2/3 text-lg leading-[2rem] opacity-90">{tag.data.description}</p>
+		)}
+	</main>
+
+	{hasBody && (
+		<section class="app-container py-12">
+			<div class="prose prose-neutral prose-lg md:prose-xl dark:prose-invert max-w-none md:w-2/3">
+				<Content />
+			</div>
+		</section>
+	)}
+
+	{taggedNotes.length > 0 && (
+		<section class="app-container py-12">
+			<h2 class="section-title">Notes</h2>
+			<ul class="posts-grid-container">
+				{taggedNotes.map((note) => {
+					const slug = note.id.split('/').slice(-1)[0];
+					return (
+						<li>
+							<Card
+								href={`/notes/${note.data.topic}/${slug}/`}
+								title={note.data.title}
+								description={note.data.description}
+								pubDate={note.data.pubDate}
+								heroImage={note.data.heroImage}
+								eyebrow={note.data.topic}
+							/>
+						</li>
+					);
+				})}
+			</ul>
+		</section>
+	)}
+
+	{taggedWriting.length > 0 && (
+		<section class="app-container py-12">
+			<h2 class="section-title">Writing</h2>
+			<ul class="posts-grid-container">
+				{taggedWriting.map((post) => (
+					<li>
+						<Card
+							href={`/writing/${post.id}/`}
+							title={post.data.title}
+							description={post.data.description}
+							pubDate={post.data.pubDate}
+							heroImage={post.data.heroImage}
+						/>
+					</li>
+				))}
+			</ul>
+		</section>
+	)}
+
+	{taggedProjects.length > 0 && (
+		<section class="app-container py-12">
+			<h2 class="section-title">Projects</h2>
+			<ul class="posts-grid-container">
+				{taggedProjects.map((project) => (
+					<li>
+						<Card
+							href={project.data.link}
+							title={project.data.title}
+							description={project.data.description}
+							heroImage={project.data.heroImage}
+							external={project.data.linkType === 'external'}
+						/>
+					</li>
+				))}
+			</ul>
+		</section>
+	)}
+
+	{taggedNotes.length === 0 && taggedWriting.length === 0 && taggedProjects.length === 0 && (
+		<section class="app-container py-12">
+			<p class="opacity-70">No content tagged with this yet.</p>
+		</section>
+	)}
+</BaseLayout>

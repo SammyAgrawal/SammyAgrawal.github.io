@@ -27,7 +27,7 @@ const posts = (await getCollection('writing')).sort(
 							description={post.data.description}
 							pubDate={post.data.pubDate}
 							heroImage={post.data.heroImage}
-							tags={post.data.tags}
+							tags={post.data.tags.map((t) => t.id)}
 						/>
 					</li>
 				))
