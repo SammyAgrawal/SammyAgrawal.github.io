@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+
+const projects = (await getCollection('projects')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout
+	title="Projects — Sammy Agrawal"
+	description="Interactive things I've built — demos, animations, small apps."
+>
+	<main class="app-container pt-36">
+		<h1 class="text-6xl pb-8 font-bold">Projects</h1>
+		<p class="md:w-2/3 text-lg leading-[2rem]">
+			Interactive things I've built — model inference demos, animations, small apps. Each card
+			links into a self-contained page (styled however the project needs) or to an externally
+			hosted app.
+		</p>
+	</main>
+	<section class="app-container py-12">
+		{
+			projects.length === 0 ? (
+				<p class="opacity-70">No projects yet.</p>
+			) : (
+				<ul class="posts-grid-container">
+					{projects.map((p) => (
+						<li>
+							<Card
+								href={p.data.link}
+								title={p.data.title}
+								description={p.data.description}
+								pubDate={p.data.pubDate}
+								heroImage={p.data.heroImage}
+								tags={p.data.tags}
+								external={p.data.linkType === 'external'}
+							/>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+</BaseLayout>

@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+
+const posts = (await getCollection('writing')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout title="Writing — Sammy Agrawal" description="Essays and opinions.">
+	<main class="app-container pt-36">
+		<h1 class="text-6xl pb-8 font-bold">Writing</h1>
+		<p class="md:w-2/3 text-lg leading-[2rem]">
+			Where notes are thoughts on input — what I'm reading and learning — writing is where I
+			develop and share beliefs. Subjective and opinionated by design.
+		</p>
+	</main>
+	<section class="app-container py-12">
+		<ul class="posts-grid-container">
+			{
+				posts.map((post) => (
+					<li>
+						<Card
+							href={`/writing/${post.id}/`}
+							title={post.data.title}
+							description={post.data.description}
+							pubDate={post.data.pubDate}
+							heroImage={post.data.heroImage}
+							tags={post.data.tags}
+						/>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+</BaseLayout>

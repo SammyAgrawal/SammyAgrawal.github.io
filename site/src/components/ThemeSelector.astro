@@ -1,0 +1,46 @@
+---
+const { class: className } = Astro.props;
+---
+
+<div
+	class:list={[
+		className,
+		'border border-foreground/40 dark:border-foreground-dark/40 rounded-full flex justify-center items-center text-xs text-foreground dark:text-foreground-dark md:opacity-80 overflow-hidden',
+	]}
+>
+	<button
+		data-theme="theme-auto"
+		aria-label="Auto Theme"
+		title="Follow system preference"
+		class="theme-button"
+	>
+		Auto
+	</button>
+	<button
+		data-theme="theme-light"
+		aria-label="Light Theme"
+		title="Light theme"
+		class="theme-button"
+	>
+		Light
+	</button>
+	<button
+		data-theme="theme-dark"
+		aria-label="Dark Theme"
+		title="Dark theme"
+		class="theme-button"
+	>
+		Dark
+	</button>
+</div>
+
+<style>
+	@reference "../styles/global.css";
+
+	button.theme-button {
+		@apply px-2.5 py-1 cursor-pointer hover:brightness-75 transition-colors;
+	}
+	:global(button.theme-button.active) {
+		@apply text-background bg-foreground/90 dark:text-background-dark dark:bg-foreground-dark/90;
+	}
+</style>

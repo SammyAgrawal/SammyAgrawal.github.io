@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	pubDate: Date;
+	updatedDate?: Date;
+	heroImage?: ImageMetadata;
+}
+
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+	<main>
+		<article>
+			<div class="app-container flex flex-col gap-8 py-24 relative">
+				<div class="grow w-full max-w-[75ch] mx-auto">
+					<h1 class="text-4xl sm:text-5xl leading-snug pt-12 font-bold">
+						{title}
+					</h1>
+					<div class="text-lg flex items-center gap-4 flex-wrap py-6 opacity-80">
+						<span><FormattedDate date={pubDate} /></span>
+						{
+							updatedDate && (
+								<span>
+									Updated <FormattedDate date={updatedDate} />
+								</span>
+							)
+						}
+					</div>
+					{
+						heroImage && (
+							<Image
+								src={heroImage}
+								alt={title}
+								class="rounded-xl w-full mb-12"
+								width={1200}
+								height={630}
+							/>
+						)
+					}
+					<div
+						class="prose prose-neutral prose-lg md:prose-xl dark:prose-invert prose-img:rounded-xl prose-figure:text-center prose-img:mx-auto"
+					>
+						<slot />
+					</div>
+				</div>
+			</div>
+		</article>
+	</main>
+</BaseLayout>

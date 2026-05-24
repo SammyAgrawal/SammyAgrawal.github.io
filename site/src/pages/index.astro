@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+	<main class="app-container pt-36">
+		<h1 class="text-6xl pb-4 font-bold">Hi, I'm Sammy.</h1>
+		<p class="md:w-2/3 text-xl leading-[2rem]">
+			I'm interested in simulating science with AI. Currently that takes the form of being a
+			Machine Learning Engineer at
+			<a class="underline underline-offset-4 hover:text-primary dark:hover:text-primary-dark" href="https://genbio.ai/">Genbio AI</a>
+			and working on hybrid physics-climate modeling with Tian Zheng at the LEAP Institute. I'm
+			based in San Francisco and looking to meet new people.
+		</p>
+	</main>
+	<section class="app-container py-16 grid md:grid-cols-3 gap-8">
+		<a href="/notes/" class="group block">
+			<h2 class="text-3xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark group-hover:underline underline-offset-4">Notes →</h2>
+			<p class="opacity-80 mt-2">Reading summaries and annotations, organized by topic.</p>
+		</a>
+		<a href="/writing/" class="group block">
+			<h2 class="text-3xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark group-hover:underline underline-offset-4">Writing →</h2>
+			<p class="opacity-80 mt-2">Essays where I develop and share my own beliefs.</p>
+		</a>
+		<a href="/projects/" class="group block">
+			<h2 class="text-3xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark group-hover:underline underline-offset-4">Projects →</h2>
+			<p class="opacity-80 mt-2">Interactive demos, animations, and small apps.</p>
+		</a>
+	</section>
+</BaseLayout>
