@@ -1,6 +1,7 @@
 # Sammy Personal Website
 Built scaffold using Astro.
 
+```
 SammyAgrawal.github.io/
 └── site/                         # THIS is the live Astro project
     ├── astro.config.mjs
@@ -13,3 +14,6 @@ SammyAgrawal.github.io/
         ├── content/              # markdown content (collections)
         ├── content.config.ts     # defines `writing`, `notes`, `projects` collections
         └── consts.ts             # SITE_TITLE, SITE_DESCRIPTION
+```
+
+View live site at `https://sammyagrawal.github.io/`.
