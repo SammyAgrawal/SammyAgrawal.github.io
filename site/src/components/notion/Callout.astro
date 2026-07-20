@@ -1,0 +1,20 @@
+---
+// Highlighted aside — the site equivalent of a Notion callout box.
+// `not-prose` on the box gives us layout control; a nested prose scope keeps
+// the body text typographically consistent with the rest of the note.
+interface Props {
+	emoji?: string;
+}
+const { emoji } = Astro.props;
+---
+
+<aside
+	class="not-prose my-6 flex gap-3 rounded-lg border border-black/10 bg-black/[0.03] p-4 dark:border-white/15 dark:bg-white/[0.05]"
+>
+	{emoji && <span class="shrink-0 text-xl leading-snug">{emoji}</span>}
+	<div
+		class="prose prose-neutral dark:prose-invert max-w-none [&>:first-child]:mt-0 [&>:last-child]:mb-0"
+	>
+		<slot />
+	</div>
+</aside>

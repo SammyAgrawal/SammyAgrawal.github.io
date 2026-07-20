@@ -1,0 +1,19 @@
+---
+// Side-by-side columns — the site equivalent of a Notion column layout.
+// Stacks to one column on mobile, splits at md+. Ratios from Notion are
+// intentionally dropped in favor of equal-width columns (cleaner + responsive).
+interface Props {
+	cols?: number;
+}
+const { cols = 2 } = Astro.props;
+const gridCols: Record<number, string> = {
+	2: 'md:grid-cols-2',
+	3: 'md:grid-cols-3',
+	4: 'md:grid-cols-4',
+};
+const gc = gridCols[cols] ?? 'md:grid-cols-2';
+---
+
+<div class:list={['my-6 grid grid-cols-1 gap-x-8 gap-y-4', gc]}>
+	<slot />
+</div>

@@ -1,0 +1,29 @@
+---
+// Collapsible disclosure — the site equivalent of a Notion "toggle" (▸ dropdown).
+// Renders a native <details>/<summary>, so it works with zero JS.
+interface Props {
+	summary: string;
+	open?: boolean;
+}
+const { summary, open = false } = Astro.props;
+---
+
+<details
+	open={open}
+	class="my-6 rounded-lg border border-black/10 px-4 py-3 dark:border-white/15"
+>
+	<summary
+		class="cursor-pointer list-none font-semibold select-none marker:content-none [&::-webkit-details-marker]:hidden"
+	>
+		<span class="mr-2 inline-block transition-transform">▸</span>{summary}
+	</summary>
+	<div class="mt-3 [&>:first-child]:mt-0 [&>:last-child]:mb-0">
+		<slot />
+	</div>
+</details>
+
+<style>
+	details[open] > summary > span {
+		transform: rotate(90deg);
+	}
+</style>

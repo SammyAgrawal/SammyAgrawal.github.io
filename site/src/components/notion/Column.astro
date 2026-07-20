@@ -1,0 +1,8 @@
+---
+// A single cell inside <Columns>. Resets the top margin of its first child so
+// column tops line up regardless of the prose spacing on headings/paragraphs.
+---
+
+<div class="min-w-0 [&>:first-child]:mt-0 [&>:last-child]:mb-0">
+	<slot />
+</div>
