@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import 'katex/dist/katex.min.css';
 
 interface Props {
 	title: string;
@@ -54,3 +55,17 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		</article>
 	</main>
 </BaseLayout>
+
+<style is:global>
+	/* Wide display equations scroll inside the prose column instead of
+	   blowing out the page width. */
+	.katex-display {
+		overflow-x: auto;
+		overflow-y: hidden;
+		padding: 0.25rem 0;
+	}
+	/* KaTeX ships its own sizing; keep prose from restyling the glyphs. */
+	.prose .katex {
+		font-size: 1.05em;
+	}
+</style>

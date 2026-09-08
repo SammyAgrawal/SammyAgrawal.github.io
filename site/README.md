@@ -66,6 +66,11 @@ into an Astro `.mdx` note that uses the components in `src/components/notion/`:
 - Notion toggle (▸ dropdown) → `<Toggle summary="…">`
 - Notion columns → `<Columns cols={n}><Column>…</Column></Columns>`
 - Notion callout → `<Callout emoji="…">`
+- Notion equations (inline + block) → `$…$` / `$$…$$`, rendered by KaTeX. A paragraph
+  containing *only* an inline equation is promoted to display math, so wide matrices
+  center and scroll instead of squishing.
+- Notion images → copied into `src/assets/<slug>/` and rewritten to a relative
+  path, so Astro's image pipeline optimizes them
 
 ### How to export from Notion
 
@@ -98,19 +103,35 @@ Add `--stdout` to preview the MDX without writing a file.
 | `--slug=`        | slugified title                            | filename / URL slug                               |
 | `--title=`       | Notion page title                          | override                                          |
 | `--description=` | first paragraph                            | override                                          |
-| `--date=`        | today                                      | **Notion HTML carries no date — set this**        |
+| `--date=`        | the page's `<time datetime>`, else today   | override the pubDate                              |
 | `--tags=`        | none                                       | comma-separated; must match files in `content/tags/` |
-| `--hero=`        | topic stock photo (if known)              | heroImage path                                    |
+| `--hero=`        | topic stock photo, else first page image   | heroImage path                                    |
+| `--assets=`      | `src/assets/<slug>/`                       | where page images are copied                      |
+| `--no-images`    | —                                          | skip copying images (leaves Notion's paths)       |
 | `--stdout`       | —                                          | print instead of writing                          |
 
 ### Notes / caveats
 
-- **Column ratios are dropped** — columns render equal-width and stack on mobile.
+- **Math needs KaTeX.** `astro.config.mjs` wires `remark-math` + `rehype-katex`, and
+  `BlogPost.astro` imports `katex/dist/katex.min.css`. Without those, `$…$` renders as
+  literal dollar signs.
+- **Keep `katex` pinned to the version `rehype-katex` bundles** (currently `0.16.47` —
+  check with `npm ls katex`, all three lines should say the same version). `rehype-katex`
+  renders the HTML with its *own* nested katex, while the CSS import resolves to the
+  *top-level* one. A mismatch silently breaks accents: 0.18 renamed `.accent` to
+  `.katex-accent`, so `\vec` arrows lose `position: relative` and fall to the bottom of
+  the glyph. Nothing errors — it just looks wrong.
+- **The default heroImage is the page's first image**, which then appears twice (hero +
+  body). Pass `--hero=` to point at something else.
+- **Column ratios are dropped** — columns render equal-width and stack on mobile. If a
+  column is still too tight (a wide matrix beside an image, say), unwrap that
+  `<Columns>` block by hand in the `.mdx`. Re-running the converter restores it, since
+  Notion's HTML says it's a 2-column list.
 - **Toggles default to closed** (that's the point of a toggle). Add `open` in the MDX
   to expand one by default.
 - **Don't leave raw exports under `src/content/`** — the collection globs `**/*.{md,mdx}`,
-  so a stray frontmatter-less `.md` will break `npm run build`. Keep `.html`/`.zip` exports
-  elsewhere (or delete after converting).
+  so a stray frontmatter-less `.md` will break `npm run build`. Unzip exports into
+  `notion-exports/` at the root of `site/` (git-ignored) and convert from there.
 - After importing, run `npm run build` to catch any schema errors, then click through the
   note in `npm run dev`.
 

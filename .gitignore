@@ -1,1 +1,4 @@
 .DS_Store
+
+# Raw Notion exports (staging only — convert with scripts/notion-to-mdx.mjs)
+site/notion-exports/
